@@ -9,5 +9,5 @@ int main() {
 	DigitalSignal sum, carry;
 
 	Half_Adder(A, B, &sum, &carry);
-	printf("A: %d, B: %d => SUM: %d, CARRY: %d\n", A, B, sum, carry);
+	cout << "A:"  << A << " B:" << B << " => SUM:"  << sum << " CARRY:" << carry << endl;
 } 
