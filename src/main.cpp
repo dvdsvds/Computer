@@ -4,10 +4,13 @@
 using namespace std;
 
 int main() {
-	DigitalSignal A = ON; // 0
-	DigitalSignal B = OFF; // 1
-	DigitalSignal sum, carry;
+	DigitalSignal A = ON;
+	DigitalSignal B = ON; 
+    DigitalSignal CARRY_IN = ON;
 
-	Half_Adder(A, B, &sum, &carry);
-	cout << "A:"  << A << " B:" << B << " => SUM:"  << sum << " CARRY:" << carry << endl;
+	DigitalSignal SUM, CARRY_OUT;
+    Full_Adder(A, B, CARRY_IN, &SUM, &CARRY_OUT);
+
+	cout << "       SUM:" << SUM << endl; 
+    cout << " CARRY OUT:" << CARRY_OUT << endl;
 } 
