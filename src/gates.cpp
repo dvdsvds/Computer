@@ -1,4 +1,4 @@
-#include "gates.h"
+#include "gates.hpp"
 
 // 둘 다 1일 때만 1
 DigitalSignal AND(DigitalSignal A, DigitalSignal B) {

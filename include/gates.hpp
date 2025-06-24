@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GATES_H
-#define GATES_H
 
 #include <stdexcept>
 
@@ -16,5 +14,3 @@ DigitalSignal NAND(DigitalSignal A, DigitalSignal B);
 DigitalSignal NOR(DigitalSignal A, DigitalSignal B);
 DigitalSignal XOR(DigitalSignal A, DigitalSignal B);
 DigitalSignal XNOR(DigitalSignal A, DigitalSignal B);
-
-#endif

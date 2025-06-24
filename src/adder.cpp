@@ -1,4 +1,4 @@
-#include "adder.h"
+#include "adder.hpp"
 
 void Half_Adder(DigitalSignal A, DigitalSignal B, DigitalSignal* SUM, DigitalSignal* CARRY) {
 	*SUM = XOR(A, B);

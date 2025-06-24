@@ -1,4 +1,4 @@
-#include "adder.h"
+#include "adder.hpp"
 #include <iostream>
 
 using namespace std;
