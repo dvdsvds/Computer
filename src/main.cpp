@@ -4,13 +4,16 @@
 using namespace std;
 
 int main() {
-	DigitalSignal A = ON;
-	DigitalSignal B = ON; 
-    DigitalSignal CARRY_IN = ON;
+	// DigitalSignal A = ON;
+	// DigitalSignal B = ON; 
+ //    DigitalSignal CARRY_IN = ON;
+	//
+	// DigitalSignal SUM, CARRY_OUT;
+ //    Full_Adder(A, B, CARRY_IN, &SUM, &CARRY_OUT);
+	//
+	// cout << "       SUM:" << SUM << endl; 
+ //    cout << " CARRY OUT:" << CARRY_OUT << endl;
+    // an 구현
+    return 0;
 
-	DigitalSignal SUM, CARRY_OUT;
-    Full_Adder(A, B, CARRY_IN, &SUM, &CARRY_OUT);
-
-	cout << "       SUM:" << SUM << endl; 
-    cout << " CARRY OUT:" << CARRY_OUT << endl;
 } 

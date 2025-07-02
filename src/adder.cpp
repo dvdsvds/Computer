@@ -13,3 +13,8 @@ void Full_Adder(DigitalSignal A, DigitalSignal B, DigitalSignal CARRY_IN, Digita
 
     *CARRY_OUT = OR(carry1, carry2);
 }
+
+int bit(int Exponent) {
+    return 1 << Exponent;
+}
+
