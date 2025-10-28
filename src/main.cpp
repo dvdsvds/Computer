@@ -1,7 +1,5 @@
 #include "lg.hpp"
-#include "circuit.hpp"
-#include <iostream>
-#include <vector>
+#include "dlc.hpp"
 #include <functional>
 
 using namespace std;
@@ -46,22 +44,36 @@ int main () {
     }
 
     vector<pair<string, function<pair<bool, bool>(bool, bool)>>> circuits = {
-        {"HA", circuit::HA}
+        {"HA", adder::HA}
     };
 
     for (auto& c : circuits) {
-    cout << endl << c.first << " Circuit" << endl;
-    cout << "A   B   Sum  Carry" << endl;
-    cout << "------------------" << endl;
+        cout << endl << c.first << " Circuit" << endl;
+        cout << "A    B    Sum  Carry" << endl;
+        cout << "------------------" << endl;
+
+        for (bool a : inputs) {
+            for (bool b : inputs) {
+                auto [sum, carry] = c.second(a, b); 
+                cout << a << "    " << b << "     "
+                    << sum << "     " << carry << endl;
+            }
+        }
+    }
+
+    cout << endl << "Full Adder" << endl;
+    cout << "A   B   Cin   Sum   Carry" << endl;
+    cout << "-------------------------" << endl;
 
     for (bool a : inputs) {
         for (bool b : inputs) {
-            auto [sum, carry] = c.second(a, b); // pair 분해 구조
-            cout << a << "    " << b << "     "
-                 << sum << "     " << carry << endl;
+            for (bool cin : inputs) {
+                auto result = adder::FA(a, b, cin);
+                cout << a << "    " << b << "    " << cin << "      "
+                    << result.first << "      " << result.second << endl;
+            }
         }
     }
-}
 
     return 0;
 }
