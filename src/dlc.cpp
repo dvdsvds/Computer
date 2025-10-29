@@ -17,6 +17,7 @@ namespace adder {
 
     std::pair<std::array<bool, 8>, bool> RCA(const std::array<bool, 8>& a, const std::array<bool, 8>& b) {
         std::pair<bool, bool> result;
+
         std::array<bool, 8> sum;
         bool carry = false;
 
