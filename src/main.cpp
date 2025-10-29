@@ -18,8 +18,8 @@ int main () {
 
     for(auto& g : gates) {
         cout << endl << g.first << " Gate" << endl;
-        cout << "A   B   F" << endl;
-        cout << "---------" << endl;
+        cout << "A    B    F" << endl;
+        cout << "-----------" << endl;
 
         for(bool a : inputs) {
             for(bool b : inputs) {
@@ -36,7 +36,7 @@ int main () {
     for(auto& g : gates_1) {
         cout << endl << g.first << " Gate" << endl;
         cout << "A    F" << endl;
-        cout << "---------" << endl;
+        cout << "------" << endl;
 
         for(bool a : inputs) {
             cout << a << "    " << g.second(a)<< endl;
@@ -44,13 +44,13 @@ int main () {
     }
 
     vector<pair<string, function<pair<bool, bool>(bool, bool)>>> circuits = {
-        {"HA", adder::HA}
+        {"HA", adders::HA}
     };
 
     for (auto& c : circuits) {
         cout << endl << c.first << " Circuit" << endl;
         cout << "A    B    Sum  Carry" << endl;
-        cout << "------------------" << endl;
+        cout << "--------------------" << endl;
 
         for (bool a : inputs) {
             for (bool b : inputs) {
@@ -61,14 +61,14 @@ int main () {
         }
     }
 
-    cout << endl << "Full Adder" << endl;
+    cout << endl << "Full adders" << endl;
     cout << "A   B   Cin   Sum   Carry" << endl;
     cout << "-------------------------" << endl;
 
     for (bool a : inputs) {
         for (bool b : inputs) {
             for (bool cin : inputs) {
-                auto result = adder::FA(a, b, cin);
+                auto result = adders::FA(a, b, cin);
                 cout << a << "    " << b << "    " << cin << "      "
                     << result.first << "      " << result.second << endl;
             }
@@ -76,9 +76,9 @@ int main () {
     }
     cout << endl;
 
-    std::array<bool, 8> a = {0,0,0,0,0,0,1,0};
-    std::array<bool, 8> b = {0,0,0,0,1,0,0,0};
-    auto result = adder::RCA(a, b);
+    std::array<bool, 8> a = {1,1,1,1,1,0,1,1};
+    std::array<bool, 8> b = {1,1,1,1,1,1,0,1};
+    auto result = adders::RCA(a, b);
 
     for(auto a1 : a) {
         cout << a1;
@@ -97,5 +97,40 @@ int main () {
 
     cout << "Carry : ";
     cout << result.second << endl;
+
+
+    cout << endl << "Full Subtrator" << endl;
+    cout << "A    B   B_in   D   B_out" << endl;
+    cout << "-------------------------" << endl;
+
+    for (bool a : inputs) {
+        for (bool b : inputs) {
+            for (bool B_in : inputs) {
+                auto result = subtractors::FS(a, b, B_in);
+                cout << a << "    " << b << "    " << B_in << "     "
+                    << result.first << "     " << result.second << endl;
+            }
+        }
+    }
+    cout << endl;
+    auto result1 = subtractors::RBS(a, b);
+
+    for(auto a1 : a) {
+        cout << a1;
+    }
+    cout << endl;
+
+    for(auto b1 : b) {
+        cout << b1;
+    }
+    cout << endl;
+    cout << "========" << endl;
+    for(auto v : result1.first) {
+        cout << v;
+    }
+    cout << endl;
+
+    cout << "Borrow  : ";
+    cout << result1.second << endl;
     return 0;
 }
