@@ -74,6 +74,28 @@ int main () {
             }
         }
     }
+    cout << endl;
 
+    std::array<bool, 8> a = {0,0,0,0,0,0,1,0};
+    std::array<bool, 8> b = {0,0,0,0,1,0,0,0};
+    auto result = adder::RCA(a, b);
+
+    for(auto a1 : a) {
+        cout << a1;
+    }
+    cout << endl;
+
+    for(auto b1 : b) {
+        cout << b1;
+    }
+    cout << endl;
+    cout << "========" << endl;
+    for(auto v : result.first) {
+        cout << v;
+    }
+    cout << endl;
+
+    cout << "Carry : ";
+    cout << result.second << endl;
     return 0;
 }
