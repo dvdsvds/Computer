@@ -21,6 +21,6 @@ namespace operators {
     std::pair<std::array<bool, BIT>, Flags> INC(const std::array<bool, BIT>& a, const bool& is_signed);
     std::pair<std::array<bool, BIT>, Flags> DEC(const std::array<bool, BIT>& a, const bool& is_signed);
     std::pair<std::array<bool, BIT>, Flags> NEG(const std::array<bool, BIT>& a, const bool& is_signed);
-    std::pair<std::array<bool, BIT>, Flags> CMP(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed);
+    Flags CMP(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed);
     
 };

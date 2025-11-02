@@ -65,6 +65,7 @@ namespace operators {
 
         return {sum, f};
     }
+
     std::pair<std::array<bool, BIT>, Flags> DEC(const std::array<bool, BIT>& a, const bool& is_signed) {
         auto [sum, carry] = subtractors::RBS(a, one);
 
@@ -82,6 +83,42 @@ namespace operators {
 
         return {sum, f};
     }
-    std::pair<std::array<bool, BIT>, Flags> NEG(const std::array<bool, BIT>& a, const bool& is_signed);
-    std::pair<std::array<bool, BIT>, Flags> CMP(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed);
+
+    std::pair<std::array<bool, BIT>, Flags> NEG(const std::array<bool, BIT>& a, const bool& is_signed) {
+        std::array<bool, BIT> zero = {0,0,0,0,0,0,0,0};
+        auto [sum, carry] = subtractors::RBS(zero, a);
+
+        Flags f{};
+        f.C = carry;
+        f.N = sum[MSB];
+        f.Z = true;
+        for(bool bit : sum) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        
+        f.V = std::equal(sum.begin(), sum.end(), std::array<bool, BIT>{1,0,0,0,0,0,0,0}.begin());
+
+        return {sum, f};
+    }
+
+    Flags CMP(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed) {
+        auto [sum, carry] = subtractors::RBS(a, b);
+
+        Flags f{};
+        f.C = carry;
+        f.N = sum[MSB];
+        f.Z = true;
+        for(bool bit : sum) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = is_signed && (a[MSB] == 1 && sum[MSB] == 0);
+
+        return f;
+    }
 }

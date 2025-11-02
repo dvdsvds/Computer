@@ -6,19 +6,16 @@
 using namespace std;
 
 int main () {
-    std::array<bool, 8> a = {0,0,0,0,0,0,0,0};
-    std::array<bool, 8> b = {0,0,0,0,0,0,0,1};
+    std::array<bool, 8> a = {1,0,0,0,0,0,0,0};
+    std::array<bool, 8> b = {0,1,1,1,1,1,1,1};
 
     bool is_signed = true;
-    auto result = operators::DEC(a, is_signed);
-    for(auto val : result.first) {
-        cout << val;
-    }
+    auto result = operators::CMP(a,b,is_signed);
     cout << " -> "
-     << "C:" << result.second.C << " "
-     << "Z:" << result.second.Z << " "
-     << "N:" << result.second.N << " "
-     << "V:" << result.second.V << endl;
+     << "C:" << result.C << " "
+     << "Z:" << result.Z << " "
+     << "N:" << result.N << " "
+     << "V:" << result.V << endl;
     // vector<pair<string, function<bool(const bool&, const bool&)>>> gates = {
     //     {"AND", gate::AND},
     //     {"OR", gate::OR},
