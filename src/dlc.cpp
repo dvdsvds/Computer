@@ -2,7 +2,7 @@
 #include "lg.hpp"
 
 #define BIT 8
-namespace adder {
+namespace adders {
     std::pair<bool, bool> HA(const bool& a, const bool& b) {
         bool sum = gate::XOR(a, b);
         bool carry = gate::AND(a, b);
@@ -32,7 +32,7 @@ namespace adder {
     }
 } 
 
-namespace subtractor {
+namespace subtractors {
     std::pair<bool, bool> HS(const bool& a, const bool& b) {
         bool D = gate::XOR(a, b);
         bool B_out = gate::AND(gate::NOT(a), b);
