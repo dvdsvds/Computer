@@ -6,19 +6,18 @@
 using namespace std;
 
 int main () {
-    std::array<bool, 8> a = {0,0,0,0,1,1,1,1};
-std::array<bool, 8> b = {1,1,1,1,0,0,0,0};
+    std::array<bool, 8> a = {1,0,1,0,0,0,0,0};
+    std::array<bool, 8> b = {1,1,1,1,0,0,0,0};
 
-    bool is_signed = true;
-    auto result = logical::TEST(a, b);
-    // for(auto val : result.first) {
-    //     cout << val;
-    // }
-    // cout << endl;
-    cout << " -> "
-     << "C:" << result.C << " "
-     << "Z:" << result.Z << " "
-     << "N:" << result.N << " "
-     << "V:" << result.V << endl;
+    auto result = shift::SAR(a, 2);
+    for(auto val : result.first) {
+        cout << val;
+    }
+    cout << endl;
+    cout << "CF " << result.second.C << endl;
+    cout << "VF " << result.second.V << endl;
+    cout << "NF " << result.second.N << endl;
+    cout << "ZF " << result.second.Z << endl;
+
     return 0;
 }

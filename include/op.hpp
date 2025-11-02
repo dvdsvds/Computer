@@ -31,3 +31,9 @@ namespace logical {
     std::pair<std::array<bool, BIT>, Flags> NOT(const std::array<bool, BIT>& a);
     Flags TEST(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b);
 }
+
+namespace shift {
+    std::pair<std::array<bool, BIT>, Flags> SHL(std::array<bool, BIT>& a, const int& count);
+    std::pair<std::array<bool, BIT>, Flags> SHR(std::array<bool, BIT>& a, const int& count);
+    std::pair<std::array<bool, BIT>, Flags> SAR(std::array<bool, BIT>& a, const int& count);
+}

@@ -53,6 +53,11 @@ namespace arithmetics {
 
         Flags f{};
         f.C = carry;
+        if(is_signed) {
+            f.V = is_signed && (a[MSB] == 0 && result[MSB] == 1);
+        } else {
+            f.V = false;
+        }
         f.N = result[MSB];
         f.Z = true;
         for(bool bit : result) {
@@ -61,7 +66,6 @@ namespace arithmetics {
                 break;
             }
         }
-        f.V = is_signed && (a[MSB] == 0 && result[MSB] == 1);
 
         return {result, f};
     }
@@ -71,6 +75,11 @@ namespace arithmetics {
 
         Flags f{};
         f.C = carry;
+        if(is_signed) {
+            f.V = is_signed && (a[MSB] == 0 && result[MSB] == 1);
+        } else {
+            f.V = false;
+        }
         f.N = result[MSB];
         f.Z = true;
         for(bool bit : result) {
@@ -79,7 +88,6 @@ namespace arithmetics {
                 break;
             }
         }
-        f.V = is_signed && (a[MSB] == 1 && result[MSB] == 0);
 
         return {result, f};
     }
@@ -90,6 +98,11 @@ namespace arithmetics {
 
         Flags f{};
         f.C = carry;
+        if(is_signed) {
+            f.V = is_signed && (a[MSB] == 0 && result[MSB] == 1);
+        } else {
+            f.V = false;
+        }
         f.N = result[MSB];
         f.Z = true;
         for(bool bit : result) {
@@ -109,6 +122,11 @@ namespace arithmetics {
 
         Flags f{};
         f.C = carry;
+        if(is_signed) {
+            f.V = is_signed && (a[MSB] == 0 && result[MSB] == 1);
+        } else {
+            f.V = false;
+        }
         f.N = result[MSB];
         f.Z = true;
         for(bool bit : result) {
@@ -117,7 +135,6 @@ namespace arithmetics {
                 break;
             }
         }
-        f.V = is_signed && (a[MSB] == 1 && result[MSB] == 0);
 
         return f;
     }
@@ -227,5 +244,82 @@ namespace logical {
         f.C = false;
         f.V = false;
         return f;
+    }
+}
+
+namespace shift {
+    std::pair<std::array<bool, BIT>, Flags> SHL(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool temp;
+        Flags f{};
+
+        for(int i = 0; i < count; ++i) {
+            temp = a[MSB];
+            f.C = temp;
+            for(size_t j = MSB; j < LSB; ++j) result[j] = a[j + 1]; 
+            result[LSB] = false;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(bool bit : result) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
+    }
+
+    std::pair<std::array<bool, BIT>, Flags> SHR(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool temp;
+        Flags f{};
+
+        for(int i = 0; i < count; ++i) {
+            temp = a[LSB];
+            f.C = temp;
+            for(size_t j = MSB; j < LSB; ++j) result[j + 1] = a[j]; 
+            result[MSB] = false;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(bool bit : result) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
+    }
+
+    std::pair<std::array<bool, BIT>, Flags> SAR(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool sign = a[MSB];
+        Flags f{};
+
+        for(int i = 0; i < count; ++i) {
+            f.C = a[LSB];
+            for(size_t j = LSB; j > MSB; --j) result[j] = a[j - 1]; 
+            result[MSB] = sign;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(size_t i = MSB; i <= LSB; ++i) {
+            if(result[i]) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
+
     }
 }
