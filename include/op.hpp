@@ -3,8 +3,7 @@
 
 #define BIT 8
 
-namespace operators {
-
+namespace arithmetic {
     constexpr size_t MSB = 0;
     constexpr size_t LSB = BIT - 1;
     constexpr std::array<bool, BIT> one = {0,0,0,0,0,0,0,1};

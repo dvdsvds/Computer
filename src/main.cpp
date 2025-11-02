@@ -10,7 +10,7 @@ int main () {
     std::array<bool, 8> b = {0,1,1,1,1,1,1,1};
 
     bool is_signed = true;
-    auto result = operators::CMP(a,b,is_signed);
+    auto result = arithmetics::CMP(a,b,is_signed);
     cout << " -> "
      << "C:" << result.C << " "
      << "Z:" << result.Z << " "

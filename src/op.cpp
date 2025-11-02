@@ -2,7 +2,7 @@
 #include "op.hpp"
 #include "dlc.hpp"
 
-namespace operators {
+namespace arithmetics {
     std::pair<std::array<bool, BIT>, Flags> ADD(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed) {
         auto [sum, carry] = adders::RCA(a, b);
 
