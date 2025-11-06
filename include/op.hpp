@@ -35,5 +35,13 @@ namespace logical {
 namespace shift {
     std::pair<std::array<bool, BIT>, Flags> SHL(std::array<bool, BIT>& a, const int& count);
     std::pair<std::array<bool, BIT>, Flags> SHR(std::array<bool, BIT>& a, const int& count);
+    std::pair<std::array<bool, BIT>, Flags> SAL(std::array<bool, BIT>& a, const int& count);
     std::pair<std::array<bool, BIT>, Flags> SAR(std::array<bool, BIT>& a, const int& count);
+}
+
+namespace rotate {
+    std::pair<std::array<bool, BIT>, Flags> ROL(std::array<bool, BIT>& a, const int& count);
+    std::pair<std::array<bool, BIT>, Flags> ROR(std::array<bool, BIT>& a, const int& count);
+    std::pair<std::array<bool, BIT>, Flags> RCL(std::array<bool, BIT>& a, const int& count);
+    std::pair<std::array<bool, BIT>, Flags> RCR(std::array<bool, BIT>& a, const int& count);
 }

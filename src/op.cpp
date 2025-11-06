@@ -298,6 +298,30 @@ namespace shift {
         return {result, f};
     }
 
+    std::pair<std::array<bool, BIT>, Flags> SAL(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        Flags f{};
+
+        for(int i = 0; i < count; ++i) {
+            f.C = a[MSB];
+            for(size_t j = LSB; j > MSB; --j) result[j] = a[j - 1]; 
+            result[MSB] = false;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(size_t i = MSB; i <= LSB; ++i) {
+            if(result[i]) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = (a[MSB] != result[MSB]);
+        return {result, f};
+
+    }
+
     std::pair<std::array<bool, BIT>, Flags> SAR(std::array<bool, BIT>& a, const int& count) {
         std::array<bool, BIT> result;
         bool sign = a[MSB];
@@ -320,6 +344,109 @@ namespace shift {
         }
         f.V = false;
         return {result, f};
+    }
+}
 
+namespace rotate {
+    std::pair<std::array<bool, BIT>, Flags> ROL(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool temp;
+        Flags f{};
+
+        for(int i = 0; i < count; ++i) {
+            temp = a[MSB];
+            f.C = temp;
+            for(size_t j = MSB; j < LSB; ++j) result[j] = a[j + 1]; 
+            result[LSB] = temp;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(bool bit : result) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
+    }
+
+    std::pair<std::array<bool, BIT>, Flags> ROR(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool temp;
+        Flags f{};
+
+        for(int i = 0; i < count; ++i) {
+            temp = a[LSB];
+            f.C = temp;
+            for(size_t j = MSB; j < LSB; ++j) result[j + 1] = a[j]; 
+            result[MSB] = temp;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(bool bit : result) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
+    }
+
+    std::pair<std::array<bool, BIT>, Flags> RCL(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool temp;
+        Flags f{};
+
+        f.C = false;
+        for(int i = 0; i < count; ++i) {
+            temp = a[MSB];
+            for(size_t j = MSB; j < LSB; ++j) result[j] = a[j + 1]; 
+            result[LSB] = f.C;
+            f.C = temp;
+            a = result;
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(bool bit : result) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
+    }
+
+    std::pair<std::array<bool, BIT>, Flags> RCR(std::array<bool, BIT>& a, const int& count) {
+        std::array<bool, BIT> result;
+        bool temp;
+        Flags f{};
+
+        f.C = false;  
+        for (int i = 0; i < count; ++i) {
+            temp = a[LSB];                       
+            for (size_t j = LSB; j > MSB; --j) result[j] = a[j - 1];
+            result[MSB] = f.C;                   
+            f.C = temp;                          
+            a = result;                          
+        }
+
+        f.N = result[MSB];
+        f.Z = true;
+        for(bool bit : result) {
+            if(bit) {
+                f.Z = false;
+                break;
+            }
+        }
+        f.V = false;
+        return {result, f};
     }
 }
