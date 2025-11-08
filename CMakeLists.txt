@@ -10,5 +10,6 @@ add_executable(Computer
     src/lg.cpp
     src/dlc.cpp
     src/op.cpp
+    src/alu.cpp
     src/main.cpp
 )

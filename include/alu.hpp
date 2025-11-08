@@ -11,8 +11,11 @@ enum class OPCODE {
 };
 
 namespace alu {
-    ALUResult execute_core(OPCODE opcode, const Binary& a, const Binary& b = {}, bool is_signed = false, int count = 1);
+    ALUResult execute_al(OPCODE opcode, const Binary& a, const Binary& b = {}, bool is_signed = false);
+    ALUResult execute_sr(OPCODE opcode, Binary& a, int count = 1);
+
     ALUResult execute(OPCODE opcode, const Binary& a, const Binary& b, bool is_signed);
+    ALUResult execute(OPCODE opcode, const Binary& a, int count);
     ALUResult execute(OPCODE opcode, const Binary& a, int count);
     ALUResult execute(OPCODE opcode, const Binary& a);
 }

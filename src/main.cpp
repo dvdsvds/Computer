@@ -1,124 +1,103 @@
 #include <iostream>
-#include <array>
-#include "op.hpp"  // 너가 올려둔 파일
+#include <bitset>
+#include "alu.hpp"
 
-using namespace std;
+// 8비트 출력을 보기 좋게 표시하기 위한 헬퍼
+void print_binary(const Binary& bin) {
+    for (bool b : bin) std::cout << b;
+}
+
+void print_flags(const Flags& f) {
+    std::cout << "  C:" << f.C
+              << " Z:" << f.Z
+              << " N:" << f.N
+              << " V:" << f.V;
+}
 
 int main() {
-    // ---- [1] ADD / SUB / INC / DEC / NEG / CMP ----
-    {
-        cout << "[Arithmetic Tests]\n";
-        array<bool, BIT> a = {0,0,0,0,1,0,1,0}; // 10
-        array<bool, BIT> b = {0,0,0,0,0,1,0,1}; // 5
+    // 테스트용 데이터
+    Binary a = {0,0,0,0,1,0,1,0}; // 10
+    Binary b = {0,0,0,0,0,1,0,1}; // 5
 
-        auto add_res = arithmetics::ADD(a, b, true);
-        auto sub_res = arithmetics::SUB(a, b, true);
-        auto inc_res = arithmetics::INC(a, true);
-        auto dec_res = arithmetics::DEC(a, true);
-        auto neg_res = arithmetics::NEG(a, true);
-        auto cmp_res = arithmetics::CMP(a, b, true);
+    std::cout << "============================\n";
+    std::cout << "[Arithmetic Tests]\n";
 
-        cout << "ADD: ";
-        for (auto bit : add_res.first) cout << bit;
-        cout << "  C:" << add_res.second.C << " Z:" << add_res.second.Z
-             << " N:" << add_res.second.N << " V:" << add_res.second.V << endl;
+    auto add = alu::execute(OPCODE::ADD, a, b, true);
+    std::cout << "ADD: "; print_binary(add.first); print_flags(add.second); std::cout << "\n";
 
-        cout << "SUB: ";
-        for (auto bit : sub_res.first) cout << bit;
-        cout << "  C:" << sub_res.second.C << " Z:" << sub_res.second.Z
-             << " N:" << sub_res.second.N << " V:" << sub_res.second.V << endl;
+    auto sub = alu::execute(OPCODE::SUB, a, b, true);
+    std::cout << "SUB: "; print_binary(sub.first); print_flags(sub.second); std::cout << "\n";
 
-        cout << "INC: ";
-        for (auto bit : inc_res.first) cout << bit;
-        cout << "  C:" << inc_res.second.C << " Z:" << inc_res.second.Z
-             << " N:" << inc_res.second.N << " V:" << inc_res.second.V << endl;
+    auto inc = alu::execute(OPCODE::INC, a);
+    std::cout << "INC: "; print_binary(inc.first); print_flags(inc.second); std::cout << "\n";
 
-        cout << "DEC: ";
-        for (auto bit : dec_res.first) cout << bit;
-        cout << "  C:" << dec_res.second.C << " Z:" << dec_res.second.Z
-             << " N:" << dec_res.second.N << " V:" << dec_res.second.V << endl;
+    auto dec = alu::execute(OPCODE::DEC, a);
+    std::cout << "DEC: "; print_binary(dec.first); print_flags(dec.second); std::cout << "\n";
 
-        cout << "NEG: ";
-        for (auto bit : neg_res.first) cout << bit;
-        cout << "  C:" << neg_res.second.C << " Z:" << neg_res.second.Z
-             << " N:" << neg_res.second.N << " V:" << neg_res.second.V << endl;
+    auto neg = alu::execute(OPCODE::NEG, a);
+    std::cout << "NEG: "; print_binary(neg.first); print_flags(neg.second); std::cout << "\n";
 
-        cout << "CMP -> C:" << cmp_res.C << " Z:" << cmp_res.Z
-             << " N:" << cmp_res.N << " V:" << cmp_res.V << endl;
-    }
+    auto cmp = alu::execute(OPCODE::CMP, a, b, true);
+    std::cout << "CMP: (no result)"; print_flags(cmp.second); std::cout << "\n";
 
-    // ---- [2] AND / OR / XOR / NOT / TEST ----
-    {
-        cout << "\n[Logical Tests]\n";
-        array<bool, 8> a = {1,0,1,0,1,0,1,0};
-        array<bool, 8> b = {0,1,0,1,0,1,0,1};
 
-        auto and_res = logical::AND(a, b);
-        auto or_res  = logical::OR(a, b);
-        auto xor_res = logical::XOR(a, b);
-        auto not_res = logical::NOT(a);
-        auto test_res = logical::TEST(a, b);
+    std::cout << "\n============================\n";
+    std::cout << "[Logical Tests]\n";
 
-        cout << "AND: "; for (auto bit : and_res.first) cout << bit;
-        cout << "  Z:" << and_res.second.Z << endl;
+    auto _and = alu::execute(OPCODE::AND, a, b, false);
+    std::cout << "AND: "; print_binary(_and.first); print_flags(_and.second); std::cout << "\n";
 
-        cout << "OR : "; for (auto bit : or_res.first) cout << bit;
-        cout << "  Z:" << or_res.second.Z << endl;
+    auto _or = alu::execute(OPCODE::OR, a, b, false);
+    std::cout << "OR : "; print_binary(_or.first); print_flags(_or.second); std::cout << "\n";
 
-        cout << "XOR: "; for (auto bit : xor_res.first) cout << bit;
-        cout << "  Z:" << xor_res.second.Z << endl;
+    auto _xor = alu::execute(OPCODE::XOR, a, b, false);
+    std::cout << "XOR: "; print_binary(_xor.first); print_flags(_xor.second); std::cout << "\n";
 
-        cout << "NOT: "; for (auto bit : not_res.first) cout << bit;
-        cout << "  Z:" << not_res.second.Z << endl;
+    auto _not = alu::execute(OPCODE::NOT, a);
+    std::cout << "NOT: "; print_binary(_not.first); print_flags(_not.second); std::cout << "\n";
 
-        cout << "TEST -> Z:" << test_res.Z << " N:" << test_res.N << endl;
-    }
+    auto test = alu::execute(OPCODE::TEST, a, b, false);
+    std::cout << "TEST: (no result)"; print_flags(test.second); std::cout << "\n";
 
-    // ---- [3] SHL / SHR / SAL / SAR ----
-    {
-        cout << "\n[Shift Tests]\n";
-        array<bool, 8> a = {0,1,0,1,0,1,0,1};
 
-        auto shl_res = shift::SHL(a, 1);
-        auto shr_res = shift::SHR(a, 1);
-        auto sal_res = shift::SAL(a, 1);
-        auto sar_res = shift::SAR(a, 1);
+    std::cout << "\n============================\n";
+    std::cout << "[Shift Tests]\n";
 
-        cout << "SHL: "; for (auto bit : shl_res.first) cout << bit;
-        cout << "  C:" << shl_res.second.C << endl;
+    Binary sh = a;
+    auto shl = alu::execute(OPCODE::SHL, sh, 1);
+    std::cout << "SHL: "; print_binary(shl.first); print_flags(shl.second); std::cout << "\n";
 
-        cout << "SHR: "; for (auto bit : shr_res.first) cout << bit;
-        cout << "  C:" << shr_res.second.C << endl;
+    sh = a;
+    auto shr = alu::execute(OPCODE::SHR, sh, 1);
+    std::cout << "SHR: "; print_binary(shr.first); print_flags(shr.second); std::cout << "\n";
 
-        cout << "SAL: "; for (auto bit : sal_res.first) cout << bit;
-        cout << "  C:" << sal_res.second.C << endl;
+    sh = a;
+    auto sal = alu::execute(OPCODE::SAL, sh, 1);
+    std::cout << "SAL: "; print_binary(sal.first); print_flags(sal.second); std::cout << "\n";
 
-        cout << "SAR: "; for (auto bit : sar_res.first) cout << bit;
-        cout << "  C:" << sar_res.second.C << endl;
-    }
+    sh = a;
+    auto sar = alu::execute(OPCODE::SAR, sh, 1);
+    std::cout << "SAR: "; print_binary(sar.first); print_flags(sar.second); std::cout << "\n";
 
-    // ---- [4] ROL / ROR / RCL / RCR ----
-    {
-        cout << "\n[Rotate Tests]\n";
-        array<bool, 8> a = {1,0,0,0,0,0,0,1};
 
-        auto rol_res = rotate::ROL(a, 1);
-        auto ror_res = rotate::ROR(a, 1);
-        auto rcl_res = rotate::RCL(a, 1);
-        auto rcr_res = rotate::RCR(a, 1);
+    std::cout << "\n============================\n";
+    std::cout << "[Rotate Tests]\n";
 
-        cout << "ROL: "; for (auto bit : rol_res.first) cout << bit;
-        cout << "  C:" << rol_res.second.C << endl;
+    Binary ro = a;
+    auto rol = alu::execute(OPCODE::ROL, ro, 1);
+    std::cout << "ROL: "; print_binary(rol.first); print_flags(rol.second); std::cout << "\n";
 
-        cout << "ROR: "; for (auto bit : ror_res.first) cout << bit;
-        cout << "  C:" << ror_res.second.C << endl;
+    ro = a;
+    auto ror = alu::execute(OPCODE::ROR, ro, 1);
+    std::cout << "ROR: "; print_binary(ror.first); print_flags(ror.second); std::cout << "\n";
 
-        cout << "RCL: "; for (auto bit : rcl_res.first) cout << bit;
-        cout << "  C:" << rcl_res.second.C << endl;
+    ro = a;
+    auto rcl = alu::execute(OPCODE::RCL, ro, 1);
+    std::cout << "RCL: "; print_binary(rcl.first); print_flags(rcl.second); std::cout << "\n";
 
-        cout << "RCR: "; for (auto bit : rcr_res.first) cout << bit;
-        cout << "  C:" << rcr_res.second.C << endl;
-    }
+    ro = a;
+    auto rcr = alu::execute(OPCODE::RCR, ro, 1);
+    std::cout << "RCR: "; print_binary(rcr.first); print_flags(rcr.second); std::cout << "\n";
 
-    return 0;
+    std::cout << "============================\n";
 }
