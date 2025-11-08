@@ -3,7 +3,7 @@
 #include "dlc.hpp"
 
 namespace arithmetics {
-    std::pair<std::array<bool, BIT>, Flags> ADD(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed) {
+    ALUResult ADD(const Binary& a, const Binary& b, bool is_signed) {
         auto [result, carry] = adders::RCA(a, b);
 
         Flags f{};
@@ -26,7 +26,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> SUB(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed) {
+    ALUResult SUB(const Binary& a, const Binary& b, bool is_signed) {
         auto [result, carry] = subtractors::RBS(a, b);
 
         Flags f{};
@@ -48,7 +48,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> INC(const std::array<bool, BIT>& a, const bool& is_signed) {
+    ALUResult INC(const Binary& a, bool is_signed) {
         auto [result, carry] = adders::RCA(a, one);
 
         Flags f{};
@@ -70,7 +70,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> DEC(const std::array<bool, BIT>& a, const bool& is_signed) {
+    ALUResult DEC(const Binary& a, bool is_signed) {
         auto [result, carry] = subtractors::RBS(a, one);
 
         Flags f{};
@@ -92,8 +92,8 @@ namespace arithmetics {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> NEG(const std::array<bool, BIT>& a, const bool& is_signed) {
-        std::array<bool, BIT> zero = {0,0,0,0,0,0,0,0};
+    ALUResult NEG(const Binary& a, bool is_signed) {
+        const Binary zero = {0,0,0,0,0,0,0,0};
         auto [result, carry] = subtractors::RBS(zero, a);
 
         Flags f{};
@@ -112,12 +112,12 @@ namespace arithmetics {
             }
         }
         
-        f.V = std::equal(result.begin(), result.end(), std::array<bool, BIT>{1,0,0,0,0,0,0,0}.begin());
+        f.V = std::equal(result.begin(), result.end(), Binary{1,0,0,0,0,0,0,0}.begin());
 
         return {result, f};
     }
 
-    Flags CMP(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed) {
+    Flags CMP(const Binary& a, const Binary& b, bool is_signed) {
         auto [result, carry] = subtractors::RBS(a, b);
 
         Flags f{};
@@ -141,7 +141,7 @@ namespace arithmetics {
 };
 
 namespace logical {
-    std::pair<std::array<bool, BIT>, Flags> AND(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b) {
+    ALUResult AND(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::AND(a[i], b[i]);
@@ -162,7 +162,7 @@ namespace logical {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> OR(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b) {
+    ALUResult OR(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::OR(a[i], b[i]);
@@ -183,7 +183,7 @@ namespace logical {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> XOR(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b) {
+    ALUResult XOR(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::XOR(a[i], b[i]);
@@ -204,7 +204,7 @@ namespace logical {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> NOT(const std::array<bool, BIT>& a) {
+    ALUResult NOT(const Binary& a) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::NOT(a[i]);
@@ -225,7 +225,7 @@ namespace logical {
         return {result, f};
     }
 
-    Flags TEST(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b) {
+    Flags TEST(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::AND(a[i], b[i]);
@@ -248,8 +248,8 @@ namespace logical {
 }
 
 namespace shift {
-    std::pair<std::array<bool, BIT>, Flags> SHL(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult SHL(Binary& a, int count) {
+        Binary result;
         bool temp;
         Flags f{};
 
@@ -273,8 +273,8 @@ namespace shift {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> SHR(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult SHR(Binary& a, int count) {
+        Binary result;
         bool temp;
         Flags f{};
 
@@ -298,8 +298,8 @@ namespace shift {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> SAL(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult SAL(Binary& a, int count) {
+        Binary result;
         Flags f{};
 
         for(int i = 0; i < count; ++i) {
@@ -322,8 +322,8 @@ namespace shift {
 
     }
 
-    std::pair<std::array<bool, BIT>, Flags> SAR(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult SAR(Binary& a, int count) {
+        Binary result;
         bool sign = a[MSB];
         Flags f{};
 
@@ -348,8 +348,8 @@ namespace shift {
 }
 
 namespace rotate {
-    std::pair<std::array<bool, BIT>, Flags> ROL(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult ROL(Binary& a, int count) {
+        Binary result;
         bool temp;
         Flags f{};
 
@@ -373,8 +373,8 @@ namespace rotate {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> ROR(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult ROR(Binary& a, int count) {
+        Binary result;
         bool temp;
         Flags f{};
 
@@ -398,8 +398,8 @@ namespace rotate {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> RCL(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult RCL(Binary& a, int count) {
+        Binary result;
         bool temp;
         Flags f{};
 
@@ -424,8 +424,8 @@ namespace rotate {
         return {result, f};
     }
 
-    std::pair<std::array<bool, BIT>, Flags> RCR(std::array<bool, BIT>& a, const int& count) {
-        std::array<bool, BIT> result;
+    ALUResult RCR(Binary& a, int count) {
+        Binary result;
         bool temp;
         Flags f{};
 

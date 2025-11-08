@@ -8,8 +8,8 @@ int main() {
     // ---- [1] ADD / SUB / INC / DEC / NEG / CMP ----
     {
         cout << "[Arithmetic Tests]\n";
-        array<bool, 8> a = {0,0,0,0,1,0,1,0}; // 10
-        array<bool, 8> b = {0,0,0,0,0,1,0,1}; // 5
+        array<bool, BIT> a = {0,0,0,0,1,0,1,0}; // 10
+        array<bool, BIT> b = {0,0,0,0,0,1,0,1}; // 5
 
         auto add_res = arithmetics::ADD(a, b, true);
         auto sub_res = arithmetics::SUB(a, b, true);

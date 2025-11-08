@@ -1,47 +1,36 @@
 #pragma once
 #include <array>
-
-#define BIT 8
-
-struct Flags {
-    bool C; // carry
-    bool Z; // zero
-    bool N; // nagative
-    bool V; // overflow
-};
-
-constexpr size_t MSB = 0;
-constexpr size_t LSB = BIT - 1;
+#include "types.hpp"
 
 namespace arithmetics {
-    constexpr std::array<bool, BIT> one = {0,0,0,0,0,0,0,1};
+    constexpr Binary one = {0,0,0,0,0,0,0,1};
 
-    std::pair<std::array<bool, BIT>, Flags> ADD(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed);
-    std::pair<std::array<bool, BIT>, Flags> SUB(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed);
-    std::pair<std::array<bool, BIT>, Flags> INC(const std::array<bool, BIT>& a, const bool& is_signed);
-    std::pair<std::array<bool, BIT>, Flags> DEC(const std::array<bool, BIT>& a, const bool& is_signed);
-    std::pair<std::array<bool, BIT>, Flags> NEG(const std::array<bool, BIT>& a, const bool& is_signed);
-    Flags CMP(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b, const bool& is_signed);
+    ALUResult ADD(const Binary& a, const Binary& b, bool is_signed);
+    ALUResult SUB(const Binary& a, const Binary& b, bool is_signed);
+    ALUResult INC(const Binary& a, bool is_signed);
+    ALUResult DEC(const Binary& a, bool is_signed);
+    ALUResult NEG(const Binary& a, bool is_signed);
+    Flags CMP(const Binary& a, const Binary& b, bool is_signed);
 };
 
 namespace logical {
-    std::pair<std::array<bool, BIT>, Flags> AND(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b);
-    std::pair<std::array<bool, BIT>, Flags> OR(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b);
-    std::pair<std::array<bool, BIT>, Flags> XOR(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b);
-    std::pair<std::array<bool, BIT>, Flags> NOT(const std::array<bool, BIT>& a);
-    Flags TEST(const std::array<bool, BIT>& a, const std::array<bool, BIT>& b);
+    ALUResult AND(const Binary& a, const Binary& b);
+    ALUResult OR(const Binary& a, const Binary& b);
+    ALUResult XOR(const Binary& a, const Binary& b);
+    ALUResult NOT(const Binary& a);
+    Flags TEST(const Binary& a, const Binary& b);
 }
 
 namespace shift {
-    std::pair<std::array<bool, BIT>, Flags> SHL(std::array<bool, BIT>& a, const int& count);
-    std::pair<std::array<bool, BIT>, Flags> SHR(std::array<bool, BIT>& a, const int& count);
-    std::pair<std::array<bool, BIT>, Flags> SAL(std::array<bool, BIT>& a, const int& count);
-    std::pair<std::array<bool, BIT>, Flags> SAR(std::array<bool, BIT>& a, const int& count);
+    ALUResult SHL(Binary& a, int count);
+    ALUResult SHR(Binary& a, int count);
+    ALUResult SAL(Binary& a, int count);
+    ALUResult SAR(Binary& a, int count);
 }
 
 namespace rotate {
-    std::pair<std::array<bool, BIT>, Flags> ROL(std::array<bool, BIT>& a, const int& count);
-    std::pair<std::array<bool, BIT>, Flags> ROR(std::array<bool, BIT>& a, const int& count);
-    std::pair<std::array<bool, BIT>, Flags> RCL(std::array<bool, BIT>& a, const int& count);
-    std::pair<std::array<bool, BIT>, Flags> RCR(std::array<bool, BIT>& a, const int& count);
+    ALUResult ROL(Binary& a, int count);
+    ALUResult ROR(Binary& a, int count);
+    ALUResult RCL(Binary& a, int count);
+    ALUResult RCR(Binary& a, int count);
 }

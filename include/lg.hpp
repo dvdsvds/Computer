@@ -3,12 +3,12 @@
 #include <iostream>
 
 namespace gate {
-    bool AND(const bool& a, const bool& b);
-    bool OR(const bool& a, const bool& b);
-    bool NOT(const bool& a);
-    bool NAND(const bool& a, const bool& b);
-    bool NOR(const bool& a, const bool& b);
-    bool XOR(const bool& a, const bool& b);
-    bool XNOR(const bool& a, const bool& b);
-    bool BUFFER(const bool& a);
+    bool AND(bool a, bool b);
+    bool OR(bool a, bool b);
+    bool NOT(bool a);
+    bool NAND(bool a, bool b);
+    bool NOR(bool a, bool b);
+    bool XOR(bool a, bool b);
+    bool XNOR(bool a, bool b);
+    bool BUFFER(bool a);
 }
