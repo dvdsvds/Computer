@@ -11,5 +11,6 @@ add_executable(Computer
     src/dlc.cpp
     src/op.cpp
     src/alu.cpp
+    src/register.cpp
     src/main.cpp
 )
