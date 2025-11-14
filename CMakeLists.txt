@@ -12,5 +12,6 @@ add_executable(Computer
     src/op.cpp
     src/alu.cpp
     src/register.cpp
+    src/cmregister.cpp
     src/main.cpp
 )

@@ -1,68 +1,61 @@
 #include <iostream>
+#include "alu.hpp"
 #include "register.hpp"
 
 int main() {
-    // ---- ACC TEST ----
-    {
-        ACC acc;
-        Binary data = {1,0,1,0,1,0,1,0};
+    ACC acc;
+    GR gr;
+    FR fr;
 
-        acc.setControl(true, false);  // load on
-        acc.LOAD(data);
-        acc.setControl(false, true);  // output on
+    // ---- [1] 입력값 준비 ----
+    Binary a = {0,0,0,0,1,0,1,0}; // 10
+    Binary b = {0,0,0,0,0,1,0,1}; // 5
 
-        std::cout << "[ACC READ] ";
-        for (bool bit : acc.READ()) std::cout << bit;
-        std::cout << "\n";
+    // GR에 피연산자 저장
+    gr.setControl(true, false);
+    gr.LOAD(b);
 
-        acc.CLEAR();
-        std::cout << "[ACC CLEAR] ";
-        for (bool bit : acc.READ()) std::cout << bit;
-        std::cout << "\n";
-    }
+    // ACC에 피연산자 저장
+    acc.setControl(true, false);
+    acc.LOAD(a);
 
-    // ---- GR TEST ----
-    {
-        GR gr;
-        Binary data = {0,1,0,1,0,1,0,1};
+    gr.setControl(false, true);
+    acc.setControl(false, true);
+    // ---- [2] alu 연산 (ADD 예시) ----
+    auto [result, flags] = alu::execute(OPCODE::ADD, acc.READ(), gr.READ(), true);
 
-        gr.setControl(true, false);
-        gr.LOAD(data);
-        gr.setControl(false, true);
 
-        std::cout << "[GR READ] ";
-        for (bool bit : gr.READ()) std::cout << bit;
-        std::cout << "\n";
+    // ---- [3] 결과를 ACC와 FR에 저장 ----
+    acc.setControl(true, false);
+    acc.LOAD(result);
 
-        gr.CLEAR();
-        std::cout << "[GR CLEAR] ";
-        for (bool bit : gr.READ()) std::cout << bit;
-        std::cout << "\n";
-    }
+    fr.setControl(true);
+    fr.LOAD(flags);
 
-    // ---- FR TEST ----
-    {
-        FR fr;
-        Flags f = {true, false, true, false}; // C, Z, N, V
+    // ---- [4] 출력 ----
+    acc.setControl(false, true);
+    std::cout << "[alu ADD RESULT] ";
+    for (bool bit : acc.READ()) std::cout << bit;
+    std::cout << "\n";
 
-        fr.setControl(true);
-        fr.LOAD(f);
+    auto f = fr.READ();
+    std::cout << "[FLAGS] "
+              << "C:" << f.C << " "
+              << "Z:" << f.Z << " "
+              << "N:" << f.N << " "
+              << "V:" << f.V << "\n";
 
-        auto out = fr.READ();
-        std::cout << "[FR READ] "
-                  << "C:" << out.C << " "
-                  << "Z:" << out.Z << " "
-                  << "N:" << out.N << " "
-                  << "V:" << out.V << "\n";
+    // ---- [5] CLEAR 테스트 ----
+    acc.CLEAR();
+    gr.CLEAR();
+    fr.CLEAR();
 
-        fr.CLEAR();
-        out = fr.READ();
-        std::cout << "[FR CLEAR] "
-                  << "C:" << out.C << " "
-                  << "Z:" << out.Z << " "
-                  << "N:" << out.N << " "
-                  << "V:" << out.V << "\n";
-    }
+    std::cout << "[ACC CLEAR] ";
+    for (bool bit : acc.READ()) std::cout << bit;
+    std::cout << "\n";
+    auto f2 = fr.READ();
+    std::cout << "[FR CLEAR] "
+              << "C:" << f2.C << " Z:" << f2.Z << " N:" << f2.N << " V:" << f2.V << "\n";
 
     return 0;
 }
