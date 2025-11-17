@@ -3,7 +3,7 @@
 #include "dlc.hpp"
 
 namespace arithmetics {
-    ALUResult ADD(const Binary& a, const Binary& b, bool is_signed) {
+    OResult ADD(const Binary& a, const Binary& b, bool is_signed) {
         auto [result, carry] = adders::RCA(a, b);
 
         Flags f{};
@@ -26,7 +26,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    ALUResult SUB(const Binary& a, const Binary& b, bool is_signed) {
+    OResult SUB(const Binary& a, const Binary& b, bool is_signed) {
         auto [result, carry] = subtractors::RBS(a, b);
 
         Flags f{};
@@ -48,7 +48,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    ALUResult INC(const Binary& a, bool is_signed) {
+    OResult INC(const Binary& a, bool is_signed) {
         auto [result, carry] = adders::RCA(a, one);
 
         Flags f{};
@@ -70,7 +70,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    ALUResult DEC(const Binary& a, bool is_signed) {
+    OResult DEC(const Binary& a, bool is_signed) {
         auto [result, carry] = subtractors::RBS(a, one);
 
         Flags f{};
@@ -92,7 +92,7 @@ namespace arithmetics {
         return {result, f};
     }
 
-    ALUResult NEG(const Binary& a, bool is_signed) {
+    OResult NEG(const Binary& a, bool is_signed) {
         const Binary zero = {0,0,0,0,0,0,0,0};
         auto [result, carry] = subtractors::RBS(zero, a);
 
@@ -141,7 +141,7 @@ namespace arithmetics {
 };
 
 namespace logical {
-    ALUResult AND(const Binary& a, const Binary& b) {
+    OResult AND(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::AND(a[i], b[i]);
@@ -162,7 +162,7 @@ namespace logical {
         return {result, f};
     }
 
-    ALUResult OR(const Binary& a, const Binary& b) {
+    OResult OR(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::OR(a[i], b[i]);
@@ -183,7 +183,7 @@ namespace logical {
         return {result, f};
     }
 
-    ALUResult XOR(const Binary& a, const Binary& b) {
+    OResult XOR(const Binary& a, const Binary& b) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::XOR(a[i], b[i]);
@@ -204,7 +204,7 @@ namespace logical {
         return {result, f};
     }
 
-    ALUResult NOT(const Binary& a) {
+    OResult NOT(const Binary& a) {
         std::array<bool, 8> result;
         for(size_t i = MSB; i <= LSB; ++i) {
             result[i] = gate::NOT(a[i]);
@@ -248,7 +248,7 @@ namespace logical {
 }
 
 namespace shift {
-    ALUResult SHL(Binary& a, int count) {
+    OResult SHL(Binary& a, int count) {
         Binary result;
         bool temp;
         Flags f{};
@@ -273,7 +273,7 @@ namespace shift {
         return {result, f};
     }
 
-    ALUResult SHR(Binary& a, int count) {
+    OResult SHR(Binary& a, int count) {
         Binary result;
         bool temp;
         Flags f{};
@@ -298,7 +298,7 @@ namespace shift {
         return {result, f};
     }
 
-    ALUResult SAL(Binary& a, int count) {
+    OResult SAL(Binary& a, int count) {
         Binary result;
         Flags f{};
 
@@ -322,7 +322,7 @@ namespace shift {
 
     }
 
-    ALUResult SAR(Binary& a, int count) {
+    OResult SAR(Binary& a, int count) {
         Binary result;
         bool sign = a[MSB];
         Flags f{};
@@ -348,7 +348,7 @@ namespace shift {
 }
 
 namespace rotate {
-    ALUResult ROL(Binary& a, int count) {
+    OResult ROL(Binary& a, int count) {
         Binary result;
         bool temp;
         Flags f{};
@@ -373,7 +373,7 @@ namespace rotate {
         return {result, f};
     }
 
-    ALUResult ROR(Binary& a, int count) {
+    OResult ROR(Binary& a, int count) {
         Binary result;
         bool temp;
         Flags f{};
@@ -398,7 +398,7 @@ namespace rotate {
         return {result, f};
     }
 
-    ALUResult RCL(Binary& a, int count) {
+    OResult RCL(Binary& a, int count) {
         Binary result;
         bool temp;
         Flags f{};
@@ -424,7 +424,7 @@ namespace rotate {
         return {result, f};
     }
 
-    ALUResult RCR(Binary& a, int count) {
+    OResult RCR(Binary& a, int count) {
         Binary result;
         bool temp;
         Flags f{};

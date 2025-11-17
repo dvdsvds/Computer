@@ -1,7 +1,7 @@
 #include "alu.hpp"
 
 namespace alu {
-    ALUResult execute_al(OPCODE opcode, const Binary& a, const Binary& b, bool is_signed) {
+    OResult execute_al(OPCODE opcode, const Binary& a, const Binary& b, bool is_signed) {
         switch (opcode)
         {
             case OPCODE::ADD: return arithmetics::ADD(a, b, is_signed);
@@ -35,7 +35,7 @@ namespace alu {
         }
     }
 
-    ALUResult execute_sr(OPCODE opcode, Binary& a, int count) {
+    OResult execute_sr(OPCODE opcode, Binary& a, int count) {
         switch (opcode)
         {
             case OPCODE::SHL: return shift::SHL(a, count);
@@ -57,22 +57,22 @@ namespace alu {
 
     }
     // ADD, SUB, AND, OR, XOR, CMP, TEST
-    ALUResult execute(OPCODE opcode, const Binary& a, const Binary& b, bool is_signed) {
+    OResult execute(OPCODE opcode, const Binary& a, const Binary& b, bool is_signed) {
         return execute_al(opcode, a, b, is_signed);
     }
 
     // SHL, SHR, SAL, SAR, ROL, ROR, RCL, RCR
-    ALUResult execute(OPCODE opcode, Binary& a, int count) {
+    OResult execute(OPCODE opcode, Binary& a, int count) {
         return execute_sr(opcode, a, count);
     }
 
-    ALUResult execute(OPCODE opcode, const Binary& a, int count) {
+    OResult execute(OPCODE opcode, const Binary& a, int count) {
         Binary temp = a;
         return execute_sr(opcode, temp, count);
     }
 
     // INC, DEC, NEG, NOT
-    ALUResult execute(OPCODE opcode, const Binary& a) {
+    OResult execute(OPCODE opcode, const Binary& a) {
         return execute_al(opcode, a);
     }
 }

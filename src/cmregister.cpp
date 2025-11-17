@@ -76,3 +76,14 @@ void IR::CLEAR() {
     data = {};
 }
 
+void SP::inc() {
+    top++;
+}
+
+void SP::dec() {
+    top--;
+}
+
+uint8_t SP::read() const {
+    return top;
+} 

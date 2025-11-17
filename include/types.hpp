@@ -15,4 +15,4 @@ constexpr size_t MSB = 0;
 constexpr size_t LSB = BIT - 1;
 
 using Binary = std::array<bool, BIT>;
-using ALUResult = std::pair<Binary, Flags>;
+using OResult = std::pair<Binary, Flags>;
